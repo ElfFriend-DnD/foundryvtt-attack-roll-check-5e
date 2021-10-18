@@ -46,5 +46,14 @@
   "manifest": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/releases/latest/download/module.json",
   "download": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/releases/latest/download/module.zip",
   "license": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/raw/main/LICENSE",
-  "readme": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/raw/main/README.md"
+  "readme": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/raw/main/README.md",
+  "flags": {
+    "allowBugReporter": true
+  },
+  "media": [
+    {
+      "type": "cover",
+      "url": "https://user-images.githubusercontent.com/7644614/137818567-7933117a-b90c-4e39-8d45-c0b094a4c218.jpg"
+    }
+  ]
 }

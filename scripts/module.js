@@ -167,7 +167,6 @@ class AttackRollCheck5eChat {
     // Control and pan on single-left
     else {
       token.control({ releaseOthers: true });
-      return canvas.animatePan({ x: token.data.x, y: token.data.y });
     }
   }
 }
