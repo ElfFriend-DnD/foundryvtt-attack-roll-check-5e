@@ -11,7 +11,7 @@
 
 Adds a chat card that is only visible for GMs that checks if an attack roll hits the targeted tokens.
 
-![attack-roll-check-5e-demo](https://user-images.githubusercontent.com/7644614/137668393-e49501dc-bccc-4480-ace4-f49da69c29cc.png)
+![attack-roll-check-5e-cover](https://user-images.githubusercontent.com/7644614/137818567-7933117a-b90c-4e39-8d45-c0b094a4c218.jpg)
 
 If there is no token targeted when the attack roll is rolled, no chat card is output.
 
