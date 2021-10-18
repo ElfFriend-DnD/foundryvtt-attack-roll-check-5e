@@ -1,0 +1,40 @@
+{
+  "name": "attack-roll-check-5e",
+  "title": "Attack Roll Check D&D5e",
+  "description": "A module which notifies the GM when an attack roll hits a targeted token.",
+  "version": "0.1.0",
+  "author": "Andrew Krigline",
+  "authors": [
+    {
+      "name": "Andrew Krigline",
+      "discord": "Calego#0914",
+      "url": "https://github.com/ElfFriend-DnD",
+      "ko-fi": "elffriend",
+      "patreon": "ElfFriend_DnD"
+    }
+  ],
+  "system": [ "dnd5e" ],
+  "scripts": [
+    "./scripts/module.js"
+  ],
+  "dependencies": [
+    {
+      "name": "more-hooks-5e"
+    },
+    {
+      "name": "socketlib"
+    },
+    {
+      "name": "lib-wrapper"
+    }
+  ],
+  "minimumCoreVersion": "0.8.9",
+  "compatibleCoreVersion": "0.8.9",
+  "url": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e",
+  "bugs": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/issues",
+  "changelog": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/releases",
+  "manifest": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/releases/latest/download/module.json",
+  "download": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/releases/latest/download/module.zip",
+  "license": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/raw/main/LICENSE",
+  "readme": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/raw/main/README.md"
+}
