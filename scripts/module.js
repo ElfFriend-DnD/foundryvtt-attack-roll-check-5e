@@ -1,9 +1,8 @@
 class AttackRollCheck5e {
   static MODULE_NAME = "attack-roll-check-5e";
-  static MODULE_TITLE = "Attack Roll Check D&D5e";
+  static MODULE_TITLE = "Attack Roll Check DnD5e";
 
-
-  static init() {
+  static init = async () => {
     console.log(`${this.MODULE_NAME} | Initializing ${this.MODULE_TITLE}`);
 
     Hooks.on('Item5e.rollAttack', this._checkAttackRoll);
@@ -32,11 +31,9 @@ class AttackRollCheck5e {
   }
 
   static _checkAttackRoll = (_item, result, _config, _actor, { userId } = {}) => {
-    // debugger;
     if (!game.user.isGM) {
       return;
     }
-
 
     if (result.options?.rollMode === 'selfRoll' && userId !== game.user.id) {
       return;
@@ -50,59 +47,46 @@ class AttackRollCheck5e {
 
     const toHitResults = targetedTokens.map((token) => this._testAttackToHit(result, token));
 
-
     const html = `
       <ul class="dnd5e chat-card check-attack-roll-list">
-        ${toHitResults.map(({ token, hit, isCriticalHit, isCriticalMiss }) => {
-          const statusLabel = this._getStatusLabel({ hit, isCriticalHit, isCriticalMiss });
+        ${toHitResults.map(({ token, ac, hit, isCriticalHit, isCriticalMiss }) => {
+      const statusLabel = this._getStatusLabel({ hit, isCriticalHit, isCriticalMiss });
 
-          const statusIcon = this._getStatusIcon({ hit, isCriticalHit, isCriticalMiss });
+      const statusIcon = this._getStatusIcon({ hit, isCriticalHit, isCriticalMiss });
 
-          return `
-            <li class="card-header">
-              <img class="token-image" src="${token.data.img}" title="${token.data.name}" width="36" height="36">
+      return `
+            <li class="card-header" data-token-id="${token.id}">
+              <img class="token-image" src="${token.data.img}" title="${token.data.name}" width="36" height="36" style="transform: rotate(${token.data.rotation ?? 0}deg);">
               <h3>${token.data.name}</h3>
               <div class="roll-display">${result.total}</div>
               <div class="status-chip ${hit ? 'hit' : 'miss'}">
                 <span>${statusLabel}</span>
                 ${statusIcon}
               </div>
-              <div class="ac-display">${token.actor?.data.data.attributes.ac.value}</div>
+              <div class="ac-display">${ac}</div>
             </li>
       `}).join('')}
       </ul>
     `
 
-    if (game.modules.get('dice-so-nice').active) {
-      Hooks.once('diceSoNiceRollComplete', (chatMessageId) => {
-        ChatMessage.create({
-          whisper: ChatMessage.getWhisperRecipients('gm'),
-          user: game.user.data._id,
-          type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-          speaker: { alias: game.i18n.localize(`${this.MODULE_NAME}.MESSAGE_HEADER`)},
-          content: html,
-        })
+    const messageData = {
+      whisper: ChatMessage.getWhisperRecipients('gm'),
+      user: game.user.data._id,
+      type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+      speaker: { alias: game.i18n.localize(`${this.MODULE_NAME}.MESSAGE_HEADER`) },
+      content: html,
+    }
+
+    if (game.modules.get('betterrolls5e')?.active) {
+      setTimeout(() => ChatMessage.create(messageData), 100);
+    }
+
+    if (game.modules.get('dice-so-nice')?.active) {
+      Hooks.once('diceSoNiceRollComplete', () => {
+        ChatMessage.create(messageData)
       })
     } else {
-      ChatMessage.create({
-        whisper: ChatMessage.getWhisperRecipients('gm'),
-        user: game.user.data._id,
-        type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-        speaker: { alias: game.i18n.localize(`${this.MODULE_NAME}.MESSAGE_HEADER`)},
-        content: html,
-      })
-    }
-  }
-
-  static _onCombatantHoverIn(event) {
-    event.preventDefault();
-    if (!canvas.ready) return;
-    const li = event.currentTarget;
-    const combatant = this.viewed.combatants.get(li.dataset.combatantId);
-    const token = combatant.token?.object;
-    if (token?.isVisible) {
-      if (!token._controlled) token._onHoverIn(event);
-      this._highlighted = token;
+      ChatMessage.create(messageData)
     }
   }
 
@@ -119,11 +103,73 @@ class AttackRollCheck5e {
       token,
       isCriticalMiss,
       isCriticalHit,
-      hit
+      hit,
+      ac,
     }
   }
 }
 
-Hooks.on("ready", async () => {
-  AttackRollCheck5e.init();
-});
+Hooks.on("ready", AttackRollCheck5e.init);
+
+/**
+ * Most of this class is adapted directly from Core's handling of Combatants
+ * in the combat tracker.
+ */
+class AttackRollCheck5eChat {
+  _highlighted = null;
+
+  /**
+   * Register the chat listeners to handle hovering over names and such.
+   */
+  static registerChatListeners = (_chatLog, html) => {
+    html.on('mouseenter', '.check-attack-roll-list > li', this._onCombatantHoverIn);
+    html.on('mouseleave', '.check-attack-roll-list > li', this._onCombatantHoverOut);
+    html.on('click', '.check-attack-roll-list > li', this._onCombatantMouseDown);
+  }
+
+  static _onCombatantHoverIn = (event) => {
+    event.preventDefault();
+
+    if (!canvas.ready) return;
+    const li = event.currentTarget;
+    const token = canvas.tokens.get(li.dataset.tokenId);
+    if (token?.isVisible) {
+      if (!token._controlled) token._onHoverIn(event);
+      this._highlighted = token;
+    }
+  }
+
+  static _onCombatantHoverOut = (event) => {
+    event.preventDefault();
+    if (!canvas.ready) return;
+
+    if (this._highlighted) this._highlighted._onHoverOut(event);
+    this._highlighted = null;
+  }
+
+  static _onCombatantMouseDown = async (event) => {
+    event.preventDefault();
+
+    const li = event.currentTarget;
+    const token = canvas.tokens.get(li.dataset.tokenId);
+    if (!token?.actor?.testUserPermission(game.user, "OBSERVED")) return;
+    const now = Date.now();
+
+    // Handle double-left click to open sheet
+    const dt = now - this._clickTime;
+    this._clickTime = now;
+    if (dt <= 250) {
+      if (token.actor) token.actor.sheet.render(true);
+    }
+
+    if (!canvas.ready) return;
+
+    // Control and pan on single-left
+    else {
+      token.control({ releaseOthers: true });
+      return canvas.animatePan({ x: token.data.x, y: token.data.y });
+    }
+  }
+}
+
+Hooks.on('renderChatLog', AttackRollCheck5eChat.registerChatListeners);

@@ -1,21 +1,23 @@
 .check-attack-roll-list {
   padding: 0;
   margin: 0;
+}
+
+.check-attack-roll-list > li {
   display: grid;
   grid-template-columns: 36px 3fr 28px 68px 28px;
   align-items: center;
   gap: 5px;
 }
 
-.check-attack-roll-list > li {
-  display: contents;
+.check-attack-roll-list > li:not(:last-child) {
+  border-bottom: 0 !important;
 }
-
 
 .check-attack-roll-list .token-image {
   flex: 0 0 36px; /* arbitrary same as 5e item thumbs */
-  height: 36px;
-  width: 36px;
+  height: 30px;
+  width: 30px;
   border: 0;
 }
 

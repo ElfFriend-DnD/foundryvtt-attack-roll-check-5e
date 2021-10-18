@@ -10,3 +10,13 @@
 [![patreon](https://img.shields.io/badge/-patreon-%23FF424D)](https://www.patreon.com/ElfFriend_DnD)
 
 Adds a chat card that is only visible for GMs that checks if an attack roll hits the targeted tokens.
+
+![attack-roll-check-5e-demo](https://user-images.githubusercontent.com/7644614/137668393-e49501dc-bccc-4480-ace4-f49da69c29cc.png)
+
+If there is no token targeted when the attack roll is rolled, no chat card is output.
+
+Compatible with:
+- Minimal Rolling Enhancements
+- Better Rolls 5e
+
+If you're using Midi, this is already entirely possible without this module. Do not use this with that.
