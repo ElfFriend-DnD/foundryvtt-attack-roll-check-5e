@@ -20,3 +20,5 @@ Compatible with:
 - Better Rolls 5e
 
 If you're using Midi, this is already entirely possible without this module. Do not use this with that.
+
+https://user-images.githubusercontent.com/7644614/137818286-f90ba76f-c613-4677-849d-cb69898958ab.mp4
