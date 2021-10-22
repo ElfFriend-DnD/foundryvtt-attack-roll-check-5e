@@ -31,7 +31,8 @@ class AttackRollCheck5e {
   }
 
   static _checkAttackRoll = (_item, result, _config, _actor, { userId } = {}) => {
-    if (!game.user.isGM) {
+    // only do this on the 'first' of the connected GMs
+    if (!(game.users.filter((user) => user.isGM)[0].id === game.userId)) {
       return;
     }
 
