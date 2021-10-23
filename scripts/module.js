@@ -31,16 +31,14 @@ class AttackRollCheck5e {
   }
 
   static _checkAttackRoll = (_item, result, _config, _actor, { userId } = {}) => {
-    // only do this on the 'first' of the connected GMs
-    if (!(game.users.filter((user) => user.isGM)[0].id === game.userId)) {
+    // only do this for the user making the roll (Compatiblity with older versions of more-hooks-5e)
+    if (!!userId && userId !== game.userId) return;
+
+    if (result.options?.rollMode === 'selfRoll') {
       return;
     }
 
-    if (result.options?.rollMode === 'selfRoll' && userId !== game.user.id) {
-      return;
-    }
-
-    const targetedTokens = [...(game.users.get(userId)?.targets?.values() ?? [])].filter(t => !!t.actor);
+    const targetedTokens = [...(game.user.targets?.values() ?? [])].filter(t => !!t.actor);
 
     if (!targetedTokens.length) {
       return;
@@ -72,7 +70,9 @@ class AttackRollCheck5e {
 
     const messageData = {
       whisper: ChatMessage.getWhisperRecipients('gm'),
+      blind: true,
       user: game.user.data._id,
+      flags: {[this.MODULE_NAME]: { isResultCard: true }},
       type: CONST.CHAT_MESSAGE_TYPES.OTHER,
       speaker: { alias: game.i18n.localize(`${this.MODULE_NAME}.MESSAGE_HEADER`) },
       content: html,
@@ -170,6 +170,20 @@ class AttackRollCheck5eChat {
       token.control({ releaseOthers: true });
     }
   }
+
+  /**
+   * Removes the messages for players which are meant to be blind.
+   */
+  static removeMessagesForPlayers = (message, html) => {
+    if (game.user.isGM) return;
+
+    if (message.getFlag(AttackRollCheck5e.MODULE_NAME, 'isResultCard')) {
+      html.addClass('attack-roll-check-5e-remove-blind');
+    }
+  }
+
 }
 
 Hooks.on('renderChatLog', AttackRollCheck5eChat.registerChatListeners);
+
+Hooks.on('renderChatMessage', AttackRollCheck5eChat.removeMessagesForPlayers);
