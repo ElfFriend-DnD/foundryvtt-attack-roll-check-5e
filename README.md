@@ -17,7 +17,9 @@ If there is no token targeted when the attack roll is rolled, no chat card is ou
 
 Compatible with:
 - Minimal Rolling Enhancements
-- Better Rolls 5e
+
+Not Compatible with:
+- Better Rolls 5e (See #1 for details)
 
 If you're using Midi, this is already entirely possible without this module. Do not use this with that.
 

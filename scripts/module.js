@@ -78,17 +78,14 @@ class AttackRollCheck5e {
       content: html,
     }
 
-    if (game.modules.get('betterrolls5e')?.active) {
-      setTimeout(() => ChatMessage.create(messageData), 100);
-    }
-
     if (game.modules.get('dice-so-nice')?.active) {
       Hooks.once('diceSoNiceRollComplete', () => {
         ChatMessage.create(messageData)
       })
-    } else {
-      ChatMessage.create(messageData)
+      return;
     }
+
+    ChatMessage.create(messageData);
   }
 
   static _testAttackToHit = (roll, token) => {
