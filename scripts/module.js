@@ -30,7 +30,7 @@ class AttackRollCheck5e {
     }
   }
 
-  static _checkAttackRoll = (_item, result, _config, _actor, { userId } = {}) => {
+  static _checkAttackRoll = (_item, result, _config, actor, { userId } = {}) => {
     // only do this for the user making the roll (Compatiblity with older versions of more-hooks-5e)
     if (!!userId && userId !== game.userId) return;
 
@@ -74,7 +74,8 @@ class AttackRollCheck5e {
       user: game.user.data._id,
       flags: {[this.MODULE_NAME]: { isResultCard: true }},
       type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-      speaker: { alias: game.i18n.localize(`${this.MODULE_NAME}.MESSAGE_HEADER`) },
+      speaker: ChatMessage.getSpeaker({actor}),
+      flavor: game.i18n.localize(`${this.MODULE_NAME}.MESSAGE_HEADER`),
       content: html,
     }
 
