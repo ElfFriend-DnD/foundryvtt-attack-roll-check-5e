@@ -1,0 +1,9 @@
+{
+    "attack-roll-check-5e": {
+        "MESSAGE_HEADER": "Résultats du jet d'attaque",
+        "HIT": "Touche",
+        "MISS": "Rate",
+        "CRITICAL": "Critique",
+        "FUMBLE": "Fumble"
+    }
+}
