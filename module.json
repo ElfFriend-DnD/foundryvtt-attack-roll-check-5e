@@ -40,7 +40,7 @@
       "name": "lib-wrapper"
     }
   ],
-  "minimumCoreVersion": "0.8.9",
+  "minimumCoreVersion": "9",
   "compatibleCoreVersion": "9",
   "url": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e",
   "bugs": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/issues",
