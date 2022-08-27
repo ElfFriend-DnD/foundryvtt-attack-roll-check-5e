@@ -13,7 +13,6 @@
       "patreon": "ElfFriend_DnD"
     }
   ],
-  "system": [ "dnd5e", "sw5e" ],
   "scripts": [
     "./scripts/module.js"
   ],
