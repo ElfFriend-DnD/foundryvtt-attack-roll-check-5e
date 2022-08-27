@@ -1,8 +1,8 @@
 {
-  "name": "attack-roll-check-5e",
+  "id": "attack-roll-check-5e",
   "title": "Attack Roll Check DnD5e",
   "description": "A module which notifies the GM when an attack roll hits a targeted token.",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Andrew Krigline",
   "authors": [
     {
@@ -32,16 +32,18 @@
       "path": "lang/fr.json"
     }
   ],
-  "dependencies": [
-    {
-      "name": "more-hooks-5e"
-    },
-    {
-      "name": "lib-wrapper"
-    }
-  ],
-  "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "9",
+  "compatibility": {
+    "minimum": 10
+  },
+  "relationships": {
+    "systems": [{
+      "id": "dnd5e",
+      "type": "system",
+      "compatibility": {
+        "minimum": "2.0.0"
+      }
+    }]
+  },
   "url": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e",
   "bugs": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/issues",
   "changelog": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e/releases",

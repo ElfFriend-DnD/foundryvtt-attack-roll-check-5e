@@ -5,7 +5,7 @@ class AttackRollCheck5e {
   static init = async () => {
     console.log(`${this.MODULE_NAME} | Initializing ${this.MODULE_TITLE}`);
 
-    Hooks.on('Item5e.rollAttack', this._checkAttackRoll);
+    Hooks.on('dnd5e.rollAttack', this._checkAttackRoll);
   }
 
   static _getStatusIcon = ({ hit, isCriticalHit, isCriticalMiss }) => {
@@ -43,6 +43,8 @@ class AttackRollCheck5e {
 
     const toHitResults = targetedTokens.map((token) => this._testAttackToHit(result, token));
 
+    console.log(toHitResults);
+
     const html = `
       <ul class="dnd5e chat-card check-attack-roll-list">
         ${toHitResults.map(({ token, ac, hit, isCriticalHit, isCriticalMiss }) => {
@@ -52,8 +54,8 @@ class AttackRollCheck5e {
 
       return `
             <li class="card-header" data-token-id="${token.id}">
-              <img class="token-image" src="${token.data.img}" title="${token.data.name}" width="36" height="36" style="transform: rotate(${token.data.rotation ?? 0}deg);">
-              <h3>${token.data.name}</h3>
+              <img class="token-image" src="${token.document.texture.src}" title="${token.document.name}" width="36" height="36" style="transform: rotate(${token.document.rotation ?? 0}deg);">
+              <h3>${token.document.name}</h3>
               <div class="roll-display">${result.total}</div>
               <div class="status-chip ${hit ? 'hit' : 'miss'}">
                 <span>${statusLabel}</span>
@@ -68,7 +70,7 @@ class AttackRollCheck5e {
     const messageData = {
       whisper: ChatMessage.getWhisperRecipients('gm'),
       blind: true,
-      user: game.user.data._id,
+      user: game.user._id,
       flags: {[this.MODULE_NAME]: { isResultCard: true }},
       type: CONST.CHAT_MESSAGE_TYPES.OTHER,
       speaker: ChatMessage.getSpeaker({actor: item.parent}),
@@ -87,7 +89,7 @@ class AttackRollCheck5e {
   }
 
   static _testAttackToHit = (roll, token) => {
-    const ac = token.actor.data.data.attributes.ac.value;
+    const ac = token.actor.system.attributes.ac.value;
     const d20 = roll.dice[0];
 
     const isCriticalHit = (d20.faces === 20) && (d20.values.length === 1) && (d20.total >= (d20.options.critical ?? 20));
