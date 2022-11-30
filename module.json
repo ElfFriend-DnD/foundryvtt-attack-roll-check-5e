@@ -41,6 +41,12 @@
       "compatibility": {
         "minimum": "2.0.0"
       }
+    },{
+      "id": "sw5e",
+      "type": "system",
+      "compatibility": {
+        "minimum": "2.0.0"
+      }
     }]
   },
   "url": "https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e",
