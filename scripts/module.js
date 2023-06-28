@@ -5,7 +5,7 @@ class AttackRollCheck5e {
   static init = async () => {
     console.log(`${this.MODULE_NAME} | Initializing ${this.MODULE_TITLE}`);
 
-    Hooks.on('dnd5e.rollAttack', this._checkAttackRoll);
+    Hooks.on(`${game.system.id}.rollAttack`, this._checkAttackRoll);
   }
 
   static _getStatusIcon = ({ hit, isCriticalHit, isCriticalMiss }) => {
@@ -46,7 +46,7 @@ class AttackRollCheck5e {
     console.log(toHitResults);
 
     const html = `
-      <ul class="dnd5e chat-card check-attack-roll-list">
+      <ul class="${game.system.id} chat-card check-attack-roll-list">
         ${toHitResults.map(({ token, ac, hit, isCriticalHit, isCriticalMiss }) => {
       const statusLabel = this._getStatusLabel({ hit, isCriticalHit, isCriticalMiss });
 
