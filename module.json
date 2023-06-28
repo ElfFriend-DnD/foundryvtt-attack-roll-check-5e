@@ -2,7 +2,7 @@
   "id": "attack-roll-check-5e",
   "title": "Attack Roll Check DnD5e",
   "description": "A module which notifies the GM when an attack roll hits a targeted token.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "authors": [
     {
       "name": "Andrew Krigline",
@@ -12,7 +12,7 @@
       "patreon": "ElfFriend_DnD"
     }
   ],
-  "scripts": [
+  "esmodules": [
     "./scripts/module.js"
   ],
   "styles": [
